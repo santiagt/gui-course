@@ -2,16 +2,54 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
-import CheckBox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import calculator from './Calculator';
 import './App.css';
+import Checkbox from '@material-ui/core/Checkbox';
+import { gray } from 'color-name';
+import { withStyles } from '@material-ui/core/styles';
+import RadioButtonCheckedTwoToneIcon from '@material-ui/icons/RadioButtonCheckedTwoTone';
+import RadioButtonUncheckedTwoToneIcon from '@material-ui/icons/RadioButtonUncheckedTwoTone';
+
+const GrayCheckbox = withStyles({
+  root: {
+    color: gray[400],
+    '&$checked': {
+      color: gray[600],
+    },
+  },
+  checked: {},
+})(props => <Checkbox color="default" {...props} />);
 
 function App() {
+  const [firstName, setFName] = React.useState("");
+  const [middleName, setMName] = React.useState("");
+  const [middleN, setMiddleN] = React.useState(true);
+
   return (
     <div className="App">
-      <Box id="exe1">
+      <Box id="exe1" border={1} width={1/4}>
+      {/* <FormControl>
+        <FormGroup> */}
+          
+          <div>
+            <TextField id="fName" label="First Name:" variant="outlined"></TextField>
+          </div>
         
+          <div>
+            <TextField id="mName" label="Middle Name:" variant="outlined"></TextField>
+          </div>
+          <FormControlLabel
+            control= {<GrayCheckbox icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} value="middleN" />}
+            label="Middle Name"
+          />
+          <div>
+            <TextField id="Lname" label="Last Name:" variant="outlined"></TextField>
+          </div>
+          <div>
+            <Button id="autoFill" variant="outlined">Autofill</Button>
+          </div>
+          {/* </FormGroup>
+      </FormControl> */}
       </Box>
     </div>
   ); 
