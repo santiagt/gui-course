@@ -23,7 +23,17 @@ const GrayCheckbox = withStyles({
 function App() {
   const [firstName, setFName] = React.useState("");
   const [middleName, setMName] = React.useState("");
-  const [middleN, setMiddleN] = React.useState(true);
+  const [middleN, setMiddleN] = React.useState(false);
+  const [checkMN, setCheckMN] = React.useState({
+    checked: true
+  })
+
+  const handleChange = name => event => {
+    setCheckMN({ ...checkMN, [name]: event.target.checked });
+  };
+    
+
+
 
   return (
     <div className="App">
@@ -36,12 +46,14 @@ function App() {
           </div>
         
           <div>
-            <TextField id="mName" label="Middle Name:" variant="outlined"></TextField>
+            <TextField id="mName" label="Middle Name:" variant="outlined" disabled={middleN}></TextField>
           </div>
-          <FormControlLabel
-            control= {<GrayCheckbox icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} value="middleN" />}
-            label="Middle Name"
-          />
+          <div style={{marginLeft: '-10px'}}> 
+            <FormControlLabel
+              control= {<GrayCheckbox icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+              label="Middle Name" checked={checkMN.checked} onChange={handleChange('checked')} value="checked" 
+            />
+          </div>
           <div>
             <TextField id="Lname" label="Last Name:" variant="outlined"></TextField>
           </div>
