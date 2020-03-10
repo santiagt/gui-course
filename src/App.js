@@ -23,39 +23,44 @@ const GrayCheckbox = withStyles({
 function App() {
   const [firstName, setFName] = React.useState("");
   const [middleName, setMName] = React.useState("");
+  const [lastName, setLName] = React.useState("");
 
   const [state, setState] = React.useState({
     mNActive: true
   });
   
   const handleChange = name => event => {
-    console.log("here")
     setState({...state, [name]: event.target.checked});   
+  }
+  const handleAutoFil = () => {
+   setFName("Santiago");
+   setLName("Torres");
+   setMName("Juan");
   }
 
 
   return (
     <div className="App">
-      <Box id="exe1" border={1} width={1/4}>
+      <Box id="exe1" border={1} width={1/4} padding={3}>
       {/* <FormControl>
         <FormGroup> */}
           
           <div>
-            <TextField id="fName" label="First Name:" variant="outlined"></TextField>
+            <TextField id="fName" label="First Name:" variant="outlined" value={firstName}></TextField>
           </div>
         
           <div>
-            <TextField id="mName" label="Middle Name:" variant="outlined" disabled={!state.mNActive}></TextField>
+            <TextField id="mName" label="Middle Name:" variant="outlined" disabled={!state.mNActive} value={middleName}></TextField>
           </div>
           <FormControlLabel
             control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('mNActive')} value="mNActive" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
             label="Middle Name" 
           />
           <div>
-            <TextField id="Lname" label="Last Name:" variant="outlined"></TextField>
+            <TextField id="Lname" label="Last Name:" variant="outlined" value={lastName}></TextField>
           </div>
           <div>
-            <Button id="autoFill" variant="outlined">Autofill</Button>
+      <Button id="autoFill" variant="outlined" onClick={handleAutoFil}>Autofill</Button>
           </div>
           {/* </FormGroup>
       </FormControl> */}
