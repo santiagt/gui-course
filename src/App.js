@@ -26,44 +26,80 @@ function App() {
   const [lastName, setLName] = React.useState("");
 
   const [state, setState] = React.useState({
-    mNActive: true
+    num1: false,
+    num2: false,
+    num3: false,
+    num4: false,
+    num5: false,
+    num6: false,
+    num7: false,
+    num8: false
   });
   
   const handleChange = name => event => {
     setState({...state, [name]: event.target.checked});   
   }
-  const handleAutoFil = () => {
-   setFName("Santiago");
-   setLName("Torres");
-   setMName("Juan");
-  }
+
 
 
   return (
     <div className="App">
-      <Box id="exe1" border={1} width={1/4} padding={3}>
+      <Box id="exe1" border={1} width={1/2} padding={3}>
       {/* <FormControl>
         <FormGroup> */}
           
           <div>
-            <TextField id="fName" label="First Name:" variant="outlined" value={firstName}></TextField>
-          </div>
-        
-          <div>
-            <TextField id="mName" label="Middle Name:" variant="outlined" disabled={!state.mNActive} value={middleName}></TextField>
-          </div>
           <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('mNActive')} value="mNActive" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-            label="Middle Name" 
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num8')} value="num8" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
           />
-          <div>
-            <TextField id="Lname" label="Last Name:" variant="outlined" value={lastName}></TextField>
+          <FormControlLabel
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num7')} value="num7" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+          />
+          <FormControlLabel
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num6')} value="num6" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+          />
+          <FormControlLabel
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num5')} value="num5" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+          />
+          <FormControlLabel
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num4')} value="num4" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+          />
+          <FormControlLabel
+            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num3')} value="num3" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+          />  
+            <FormControlLabel
+              control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num2')} value="num2" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+            />
+            <FormControlLabel
+              control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num1')} value="num1" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
+            />
           </div>
-          <div>
-      <Button id="autoFill" variant="outlined" onClick={handleAutoFil}>Autofill</Button>
+          <div><br></br></div>
+          <div style={{
+          display: "flex",
+          height: "2",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+            <Box border={1} width={1/2}>
+              <p>Hello</p>
+            </Box>
           </div>
-          {/* </FormGroup>
-      </FormControl> */}
+          <div><br></br></div>
+          <div> 
+            <Button variant="contained" color="primary" component="span">convert</Button>
+          </div>
+          <div><br></br></div>
+          <div style={{
+          display: "flex",
+          height: "2",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
+          <Box border={1} width={1/2}>
+            <p> hola</p>
+          </Box>
+        </div>
       </Box>
     </div>
   ); 
