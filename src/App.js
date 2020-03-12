@@ -21,9 +21,8 @@ const GrayCheckbox = withStyles({
 })(props => <Checkbox color="default" {...props} />);
 
 function App() {
-  const [firstName, setFName] = React.useState("");
-  const [middleName, setMName] = React.useState("");
-  const [lastName, setLName] = React.useState("");
+  const [bin, setBin] = React.useState("00000000");
+  let [dec, setDec] = React.useState(" ");
 
   const [state, setState] = React.useState({
     num1: false,
@@ -35,9 +34,25 @@ function App() {
     num7: false,
     num8: false
   });
-  
   const handleChange = name => event => {
-    setState({...state, [name]: event.target.checked});   
+    setState({...state, [name]: event.target.checked});
+  }
+
+  const handleBin = () => {
+    let binValue = [state.num8, 
+      state.num7, 
+      state.num6, 
+      state.num5, 
+      state.num4, 
+      state.num3,
+      state.num2,
+      state.num1]
+      setBin(binValue.map(x => { return x ? "1" : "0"}).reduce((acc, val) => {return acc + val;}));
+      console.log(bin);
+  }
+  
+  let handleConvert = () => {
+    setDec(parseInt(bin, 2));
   }
 
 
@@ -73,6 +88,7 @@ function App() {
             <FormControlLabel
               control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num1')} value="num1" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
             />
+            <Button onClick={handleBin}>update</Button>
           </div>
           <div><br></br></div>
           <div style={{
@@ -82,12 +98,12 @@ function App() {
           alignItems: "center"
         }}>
             <Box border={1} width={1/2}>
-              <p>Hello</p>
+              <p>{bin}</p>
             </Box>
           </div>
           <div><br></br></div>
           <div> 
-            <Button variant="contained" color="primary" component="span">convert</Button>
+            <Button variant="contained" color="primary" component="span" onClick={handleConvert}>convert</Button>
           </div>
           <div><br></br></div>
           <div style={{
@@ -97,7 +113,7 @@ function App() {
           alignItems: "center"
         }}>
           <Box border={1} width={1/2}>
-            <p> hola</p>
+            <p>{dec}</p>
           </Box>
         </div>
       </Box>
