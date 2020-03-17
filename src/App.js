@@ -9,6 +9,7 @@ import { gray } from 'color-name';
 import { withStyles } from '@material-ui/core/styles';
 import RadioButtonCheckedTwoToneIcon from '@material-ui/icons/RadioButtonCheckedTwoTone';
 import RadioButtonUncheckedTwoToneIcon from '@material-ui/icons/RadioButtonUncheckedTwoTone';
+import { TextareaAutosize } from '@material-ui/core';
 
 const GrayCheckbox = withStyles({
   root: {
@@ -21,101 +22,26 @@ const GrayCheckbox = withStyles({
 })(props => <Checkbox color="default" {...props} />);
 
 function App() {
-  const [bin, setBin] = React.useState("00000000");
-  let [dec, setDec] = React.useState(" ");
+  const [mCilck, setMClick] = React.useState(0);
+  const [mMove, setMMove] = React.useState(0);
+  const [mScrol, setMScrol] = React.useState(0);
 
-  const [state, setState] = React.useState({
-    num1: false,
-    num2: false,
-    num3: false,
-    num4: false,
-    num5: false,
-    num6: false,
-    num7: false,
-    num8: false
-  });
-  const handleChange = name => event => {
-    setState({...state, [name]: event.target.checked});
-  }
-
-  const handleBin = () => {
-    let binValue = [state.num8, 
-      state.num7, 
-      state.num6, 
-      state.num5, 
-      state.num4, 
-      state.num3,
-      state.num2,
-      state.num1]
-      setBin(binValue.map(x => { return x ? "1" : "0"}).reduce((acc, val) => {return acc + val;}));
-      console.log(bin);
-  }
   
-  let handleConvert = () => {
-    setDec(parseInt(bin, 2));
+  const handleClick = () => {
+    setMClick(mCilck + 1);
   }
-
 
 
   return (
     <div className="App">
-      <Box id="exe1" border={1} width={1/2} padding={3}>
-      {/* <FormControl>
-        <FormGroup> */}
-          
-          <div>
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num8')} value="num8" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num7')} value="num7" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num6')} value="num6" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num5')} value="num5" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num4')} value="num4" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />
-          <FormControlLabel
-            control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num3')} value="num3" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-          />  
-            <FormControlLabel
-              control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num2')} value="num2" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-            />
-            <FormControlLabel
-              control= {<GrayCheckbox checked={state.mNActive} onChange={handleChange('num1')} value="num1" icon={<RadioButtonUncheckedTwoToneIcon />} checkedIcon={<RadioButtonCheckedTwoToneIcon />} />}
-            />
-            <Button onClick={handleBin}>update</Button>
-          </div>
-          <div><br></br></div>
-          <div style={{
-          display: "flex",
-          height: "2",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-            <Box border={1} width={1/2}>
-              <p>{bin}</p>
-            </Box>
-          </div>
-          <div><br></br></div>
-          <div> 
-            <Button variant="contained" color="primary" component="span" onClick={handleConvert}>convert</Button>
-          </div>
-          <div><br></br></div>
-          <div style={{
-          display: "flex",
-          height: "2",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-          <Box border={1} width={1/2}>
-            <p>{dec}</p>
-          </Box>
-        </div>
+      <Box id="exe1" border={1} width={1/4} padding={3}>
+        <Box border={1}>Mouse was clicked:
+            <Button variant="outlined" onClick={handleClick}> Button {mCilck}</Button>
+        </Box>
+        <br></br>
+        <Box  border={1} height={30}></Box>
+      
+         
       </Box>
     </div>
   ); 
