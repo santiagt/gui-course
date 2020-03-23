@@ -2,106 +2,93 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles, Typography } from '@material-ui/core';
+import Slider from '@material-ui/core/Slider';
+import { makeStyles } from '@material-ui/core';
 
 const useStyle = makeStyles (theme => ({
   box1: {
     marginLeft: theme.spacing(10),
+    height: 200,
+    backgroundColor: props => props.value,
 
   },
 
-  text1: {
-    fontSize: 40,
-    fontWeight: "bold",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-	    height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
+  slider: {
+    margin: 20,
+  },
+
+  bg: {
+    backgroundColor: props => props.value, 
   }
 }));
 
 function App() {
-  const [value, setValue] = React.useState("Heading");
-  const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+  const [red, setRed] = React.useState(40);
+  const [green, setGreen] = React.useState(60);
+  const [blue, setBlue] = React.useState(70);
+  const [value, setValue] = React.useState('rgb(40, 60, 70)');
+
+  const handleChangeR = (event, newValue) => {
+    setRed(newValue);
+    setValue(`rgb(${red}, ${green}, ${blue})`);
+    console.log(newValue);
+    console.log(value);
   };
   
-  const handleChange = event => {
-    setValue(event.target.value);
+  const handleChangeG = (event, newValue) => {
+    setGreen(newValue)
+    setValue(`rgb(${red}, ${green}, ${blue})`);
+    
   }
 
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-
-  const handleOpen = () => {
-    setOpen(true);
+  const handleChangeB = (event, newValue) => {
+    setBlue(newValue)
+    setValue(`rgb(${red}, ${green}, ${blue})`);
+    
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-  
-  
-
-  const styledClasses = useStyle();
+  const styledClasses = useStyle({backgroundColor: value});
   return (
     <div className="App" >
       <AppBar position="static">
         <Toolbar variant="dense">
-          <Button variant="text" color="primary">File</Button>
-          
-          <Button onClick={handleClick} variant="text" color="primary">Edit</Button>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}>
-            <MenuItem>Options:</MenuItem>
-            <MenuItem onClick={handleOpen}>Update</MenuItem>
-            <MenuItem>something</MenuItem>
-
-          </Menu>
-          <Dialog aria-labelledby="About" open={open} onClose={handleClose}>
-            <DialogTitle>Update:</DialogTitle>
-            <DialogContent>
-              <Typography>Type your message:</Typography>
-              <br></br>
-              <TextField placeholder="" 
-                         multiline
-                         rowsMax="4"
-                          value={value}
-                          onChange={handleChange}></TextField>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-          
         </Toolbar>
       </AppBar>
+      <div style={{backgroundColor: value}} className={styledClasses.bg}>
+        <br></br>
+        <Box width={220} border={1} padding={5} paddingBottom={10} style={{backgroundColor: value}} className={ styledClasses.box1 }>
+          <Slider
+              onChange={handleChangeR}
+              className={styledClasses.slider}
+              orientation="vertical"
+              min={0}
+              max={255}
+              value={red}
+              defaultValue={40}
+          />
+            <Slider
+              className={styledClasses.slider}
+              onChange={handleChangeG}
+              orientation="vertical"
+              min={0}
+              max={255}
+              vaule={green}
+              defaultValue={60}
+            />
+            <Slider
+              className={styledClasses.slider}
+              onChange={handleChangeB}
+              orientation="vertical"
+              min={0}
+              max={255}
+              value={blue}
+              defaultValue={70}
+            />
+          
+        </Box>
 
-      <Box width={1} padding={5} className={styledClasses.box1}>
-      <Typography className={styledClasses.text1}>{value}</Typography>
-        
-      </Box>
+      </div>
+      
     </div>
   ); 
 }
