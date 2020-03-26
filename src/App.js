@@ -13,7 +13,7 @@ import { makeStyles, ListItemText } from '@material-ui/core';
 const useStyle = makeStyles (theme => ({
   box1: {
     marginLeft: theme.spacing(15),
-    height: 300,
+    height: "75%",
   },
 
   buttons: {
