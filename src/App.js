@@ -13,7 +13,7 @@ import bythesea from './bythesea.jpg';
 
 const useStyle = makeStyles (theme => ({
   box1: {
-    marginLeft: theme.spacing(5),
+    marginLeft: theme.spacing(10),
     height: "75%",
   },
 
@@ -27,7 +27,39 @@ function App() {
   const [heading, setHeading] = React.useState(["Heading"]);
   const [image, setImage] = React.useState(bythesea);
   const [caption, setCaption] = React.useState("Caption")
- 
+
+  const headingDragStart = (event) => {
+    event.dataTransfer.setData("text/plain", heading);
+    event.dataTransfer.setData("text/html", "<h2>"+ heading +"<h2>");
+    event.dataTransfer.dropEffect = "copy";
+  }
+
+  const headingOnDrop = (event) => {
+    let items = event.dataTransfer.items;
+    for  (let i = 0; i < items.length; i++) {
+      let item = items[i];
+      if (item.kind === 'string') {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text/plain");
+        setHeading(data);
+        return;
+      }
+    }
+    event.preventDefault();
+  }
+
+  const headingDragEnter = (event) => {
+    let items = event.dataTransfer.items;
+    for  (let i = 0; i < items.length; i++) {
+      let item = items[i];
+      if (item.kind === 'string') {
+        event.preventDefault();
+        return;
+      }
+    }
+  }
+
+  
 
   const styledClasses = useStyle();
   
@@ -44,23 +76,21 @@ function App() {
           <Button color="inherit" >Redo</Button>
         </Toolbar>
       </AppBar>
-      <div > 
+      <div contentEditable={true}>
+        <Typography id="heading" variant="h2" align="center">{heading}</Typography> 
         
         
-        <Box width={1/3} border={1} padding={5} 
-        paddingBottom={10} 
+        <Box width={1/2} padding={5} 
+        paddingBottom={10}  
         className={ styledClasses.box1 }>
-          
-
+          <img src={bythesea} alt="suomenlinna"
+               style={{height: 600}}
+               id="pic"></img>
+               <br></br>
+          <Typography variant="caption" marginTop={40}>{caption}</Typography>
         </Box>
         <br></br>
-        <Grid container spacing={3}>
-          <Grid item xs></Grid>
-          <Grid item xs>
-            
-          </Grid>
-          <Grid item xs></Grid>
-        </Grid>
+        
       </div>
       
     </div>
