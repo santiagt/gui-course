@@ -127,6 +127,8 @@ function App() {
     setCanvasSize([window.innerWidth, window.innerHeight]);
   }
 
+  
+
   const drawCircle = (ctx, color, x, y) => {
     ctx.beginPath();
     ctx.arc(x, y, 100, 0, Math.PI*2, false);
@@ -141,16 +143,17 @@ function App() {
 
 useEffect(() => {
   let ctx = canvasRef.current.getContext('2d');
-  
-  ctx.save();
+
+  drawCircle(ctx, color1, 360, 100);
+  drawCircle(ctx, color2, 300, 200);
+  drawCircle(ctx, color3, 425, 200);
   ctx.globalAlpha = "1";
   ctx.globalCompositeOperation = "lighten";
   drawCircle(ctx, color1, 360, 100);
   drawCircle(ctx, color2, 300, 200);
   drawCircle(ctx, color3, 425, 200);
-  ctx.restore();
+  
 
-  ctx.save();
   ctx.globalCompositeOperation = "normal";
   ctx.font = "20px Georgia"
   writeLabel(ctx, label1, (345 - (label1.length * 2)), 70);
@@ -167,7 +170,6 @@ useEffect(() => {
   writeLabel(ctx, label23, (335 - label23.length), 220);
   writeLabel(ctx, label13, (380 - label13.length ), 135);
   writeLabel(ctx, label123, (315 - label123.length), 180);
-  ctx.restore();
   
 
   
