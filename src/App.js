@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,24 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import coins from './coins.json';
+import DefaultTooltipContent from 'recharts/lib/component/DefaultTooltipContent';
+
+const CustomTooltip = props => {
+  // payload[0] doesn't exist when tooltip isn't visible
+  if (props.payload[0] != null) {
+    // mutating props directly is against react's conventions
+    const newPayload = [
+      {
+        value: props.payload[0].payload.pv + props.payload[0].payload.sym,
+      },
+    ];
+    // we render the default, but with our overridden payload
+    return <DefaultTooltipContent {...props} payload={newPayload} />;
+  }
+
+  // we just render the default
+  return <DefaultTooltipContent {...props} />;
+};
 
 const useStyle = makeStyles (theme => ({
   box1: {
@@ -28,35 +46,61 @@ const useStyle = makeStyles (theme => ({
   },
 }));
 
+//sample from the coins.json file:
+//{ 
+//   "CAD": {
+//     "symbol": "CA$",
+//     "name": "Canadian Dollar",
+//     "symbol_native": "$",
+//     "decimal_digits": 2,
+//     "rounding": 10,
+//     "code": "CAD",
+//     "name_plural": "Canadian dollars"
+// },
+// "EUR": {
+//     "symbol": "€",
+//     "name": "Euro",
+//     "symbol_native": "€",
+//     "decimal_digits": 2,
+//     "rounding": 2,
+//     "code": "EUR",
+//     "name_plural": "euros"
+// },
+// }
+
 
 function App() {
-  const data = [
-    {name: 'Page A', pv: 2400},
-    {name: 'Page B', pv: 1398},
-    {name: 'Page C', pv: 20000},
-    {name: 'Page D', pv: 3908},
-    {name: 'Page E', pv: 4800},
-    {name: 'Page F', pv: 3800},
-    {name: 'Page G', pv: 4300},
-  ];
   const [currency, setCurrency] = React.useState('EUR');
-
+  
   const handleChange = (event) => {
     setCurrency(event.target.value);
   };
 
-  
-  
+  let today = new Date();
+  let monthYear = "."+today.getMonth()+"."+today.getFullYear();
   
   let currArr = [];
   Object.keys(coins).forEach((key) => {
     currArr.push(coins[key]);
   });
-  
-}
-// useEffect(() => {
 
-// })
+  const data = [
+    {name: ((parseInt(today.getDate())-4) + monthYear), pv: (Math.random() * coins[currency].rounding).toFixed(2), sym: coins[currency].symbol_native},
+    {name: ((parseInt(today.getDate())-3) + monthYear), pv: (Math.random() * coins[currency].rounding).toFixed(2), sym: coins[currency].symbol_native},
+    {name: ((parseInt(today.getDate())-2) + monthYear), pv: (Math.random() * coins[currency].rounding).toFixed(2), sym: coins[currency].symbol_native},
+    {name: ((parseInt(today.getDate())-1) + monthYear), pv: (Math.random() * coins[currency].rounding).toFixed(2), sym: coins[currency].symbol_native},
+    {name: (today.getDate() + monthYear), pv: (Math.random() * coins[currency].rounding).toFixed(2), sym: coins[currency].symbol_native},
+  ];
+  
+  
+
+  const menuItems = [];
+  for (const [i, coin] of currArr.entries()) {
+    
+    menuItems.push(<MenuItem value={coin.code}>{coin.name}</MenuItem>);
+  }
+
+
   const styledClasses = useStyle();
   
   return (
@@ -83,7 +127,7 @@ function App() {
           <XAxis dataKey="name"/>
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>
-          <Tooltip/>
+          <Tooltip content={CustomTooltip}/>
           <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 4}}/>
           </LineChart>
           <br></br>
@@ -101,10 +145,7 @@ function App() {
                     value={currency}
                     onChange={handleChange}
                   >
-
-                    <MenuItem value={"EUR"}>Euros</MenuItem>
-                    <MenuItem value={20}>Sterling Pounds</MenuItem>
-                    <MenuItem value={30}>Swedish Crown</MenuItem>
+                    {menuItems}
                   </Select>
                 </FormControl>
                 </Grid>
