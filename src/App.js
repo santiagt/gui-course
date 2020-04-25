@@ -6,16 +6,14 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import { makeStyles, TextField } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-
-
+import coins from './coins.json';
 
 const useStyle = makeStyles (theme => ({
   box1: {
@@ -23,8 +21,9 @@ const useStyle = makeStyles (theme => ({
     height: "75%",
   },
 
-  buttons: {
+  select: {
     margin: 5,
+    marginLeft: 30,
     
   },
 }));
@@ -34,44 +33,27 @@ function App() {
   const data = [
     {name: 'Page A', pv: 2400},
     {name: 'Page B', pv: 1398},
-    {name: 'Page C', pv: 9800},
+    {name: 'Page C', pv: 20000},
     {name: 'Page D', pv: 3908},
     {name: 'Page E', pv: 4800},
     {name: 'Page F', pv: 3800},
     {name: 'Page G', pv: 4300},
-];
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  ];
+  const [currency, setCurrency] = React.useState('EUR');
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
+  const handleChange = (event) => {
+    setCurrency(event.target.value);
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  }
-
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
- 
-
+  
+  
+  
+  let currArr = [];
+  Object.keys(coins).forEach((key) => {
+    currArr.push(coins[key]);
+  });
+  
+}
 // useEffect(() => {
 
 // })
@@ -102,38 +84,31 @@ function App() {
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>
           <Tooltip/>
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
+          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 4}}/>
           </LineChart>
-          <TextField></TextField>
+          <br></br>
           <div>
             <div>
-              <Button
-                ref={anchorRef}
-                aria-controls={open ? 'menu-list-grow' : undefined}
-                marginLeft={90}
-                aria-haspopup="true"
-                onClick={handleToggle}
-              >
-                currency
-              </Button>
-              <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+            <Grid container spacing={3}>
+              <Grid item xs={5}>
+              </Grid>
+              <Grid item xs={7}>
+                <FormControl className={styledClasses.select}>
+                  <InputLabel id="currency">Currency</InputLabel>
+                  <Select
+                    labelId="currency"
+                    id="select-currency"
+                    value={currency}
+                    onChange={handleChange}
                   >
-                    <Paper>
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                          <MenuItem onClick={handleClose}>Profile</MenuItem>
-                          <MenuItem onClick={handleClose}>My account</MenuItem>
-                          <MenuItem onClick={handleClose}>Logout</MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                  )}
-                </Popper>
+
+                    <MenuItem value={"EUR"}>Euros</MenuItem>
+                    <MenuItem value={20}>Sterling Pounds</MenuItem>
+                    <MenuItem value={30}>Swedish Crown</MenuItem>
+                  </Select>
+                </FormControl>
+                </Grid>
+              </Grid>
             </div>
           </div>
         </Box>
