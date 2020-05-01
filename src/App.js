@@ -19,7 +19,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, TextField } from '@material-ui/core';
 
 const useStyle = makeStyles (theme => ({
   box1: {
@@ -36,6 +36,8 @@ const useStyle = makeStyles (theme => ({
 
 function App() {
   const [open, setOpen] = React.useState(false);
+  const [nodes, setNodes] = React.useState(5);
+  const [weights, setWeights] = React.useState([4,7,5,3,7,3,9,8,1,2]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -44,7 +46,52 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const changeNodes = (event) => {
+    setNodes(event.target.value);
+    const newNodes = event.target.value; 
+    const newWeights = [];
+    for (let i = 1; i < newNodes; i++) {
+      for (let j = i+1; j <= newNodes; j++) {
+      newWeights.push(Math.floor((Math.random() * 10) + 1));
+      }
+    }
+    setWeights(newWeights);
+  }
+
+  const changeWeights = index => event => {
+    setWeights(weights.slice(0, index).concat(event.target.value).concat(weights.slice((index+1))));
+  }
   
+  const nodesNumArr = [];
+  for (let i = 3; i < 16; i++) {
+    nodesNumArr.push(<MenuItem value={i}>{i}</MenuItem>);
+  }
+
+  const weightsArr = [];
+  for (let i = 1; i < 11; i++) {
+    weightsArr.push(<MenuItem value={i}>{i}</MenuItem>);
+  }
+  
+  const nodesWeights = [];
+  let c = 0;
+  for (let i = 1; i < nodes; i++) {
+    for (let j = i+1; j <= nodes; j++) {
+      nodesWeights.push(<Grid container>
+                          <Grid xs={2}></Grid>
+                          <Grid xs={10}>
+                          <InputLabel id={i+"to"+j}>{"From "+i+" to "+j}</InputLabel>
+                            <Select labelId={i+"to"+j}
+                                    value={weights[c]}
+                                    onChange={changeWeights(c)}>
+                              {weightsArr}
+                            </Select>
+                          </Grid>
+                        </Grid>);
+      c++;
+    }
+  }
+
   const styledClasses = useStyle();
   
   return (
@@ -65,11 +112,35 @@ function App() {
         <div>
           <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />
+          <Typography variant="h6" noWrap>
+            / Settings 
+          </Typography>
           </IconButton>
+          
         </div>
         <Divider />
-        <List>
-        </List>
+        <div>
+         <List>
+         <Typography variant="h6" noWrap>
+           Number of Nodes 
+          </Typography>
+          <Grid container>
+            <Grid xs={2}></Grid>
+            <Grid xs={4}>
+              <Select value={nodes}
+                      onChange={changeNodes}>
+                {nodesNumArr}
+              </Select>
+            </Grid>
+          </Grid>
+          <br></br>
+           <Typography variant="h6" noWrap>
+             Weight Between Nodes
+           </Typography>
+           <br></br>
+            {nodesWeights}
+         </List>
+        </div>
       </Drawer>
       <div>
         
