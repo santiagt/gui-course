@@ -77,7 +77,7 @@ function App() {
   };
 
   let today = new Date();
-  let monthYear = "."+today.getMonth()+"."+today.getFullYear();
+  let monthYear = "."+(today.getMonth() + 1)+"."+today.getFullYear();
   
   let currArr = [];
   Object.keys(coins).forEach((key) => {
