@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -39,6 +39,13 @@ function App() {
   const [nodes, setNodes] = React.useState(5);
   const [weights, setWeights] = React.useState([4,7,5,3,7,3,9,8,1,2]);
 
+  const canvasRef = React.useRef(null);
+  const WIDTH = 800;
+  const HEIGHT = 600;
+  
+  const cities = [];
+
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -61,6 +68,19 @@ function App() {
 
   const changeWeights = index => event => {
     setWeights(weights.slice(0, index).concat(event.target.value).concat(weights.slice((index+1))));
+  }
+
+  const getRandom = (max, min) => {
+    return Math.floor(Math.random() * (max - min) + min)
+  }
+
+  const setCities = () => {
+    for (let i = 0; i < nodes; i++) {
+      cities.push({ name: (i + 1),
+                    locationX: getRandom(700, 100), 
+                    locationY: getRandom(500, 100),
+      });
+    }
   }
   
   const nodesNumArr = [];
@@ -90,6 +110,16 @@ function App() {
                         </Grid>);
       c++;
     }
+  }
+  useEffect(() => {
+		redrawCanvas();
+	});
+	
+	const redrawCanvas = () => {
+    let ctx = canvasRef.current.getContext('2d');
+    setCities();
+
+
   }
 
   const styledClasses = useStyle();
@@ -147,6 +177,7 @@ function App() {
         <Box width={1/2} padding={5} 
         paddingBottom={10}  
         className={ styledClasses.box1 }>
+         	<canvas width={WIDTH} height={HEIGHT} onClick={handleDrawerOpen} ref={canvasRef} />
         </Box>
       </div>
     </div>
