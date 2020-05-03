@@ -8,18 +8,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import clsx from 'clsx';
-import { makeStyles, TextField } from '@material-ui/core';
+import { makeStyles} from '@material-ui/core';
 
 const useStyle = makeStyles (theme => ({
   box1: {
@@ -43,8 +38,30 @@ function App() {
   const WIDTH = 800;
   const HEIGHT = 600;
   
-  const cities = [];
+  const [cities, setCities] = React.useState([{name: 1, locationX: 492, locationY: 169},
+                                              {name: 2, locationX: 527, locationY: 459},
+                                              {name: 3, locationX: 162, locationY: 341},
+                                              {name: 4, locationX: 581, locationY: 410},
+                                              {name: 5, locationX: 390, locationY: 286}]);
+  const radius = 5;
 
+  const getRandom = (max, min) => {
+    return Math.floor(Math.random() * (max - min) + min)
+  }
+  console.log(cities);
+  console.log(cities[1].locationX);
+  
+  const setNewCities = (nodes) => {
+    const newCities = [];
+    for (let i = 0; i < nodes; i++) {
+      newCities.push({ name: (i + 1),
+                    locationX: getRandom(700, 100), 
+                    locationY: getRandom(500, 100),
+      });
+    }
+    setCities(newCities);
+    console.log(cities)
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -64,24 +81,18 @@ function App() {
       }
     }
     setWeights(newWeights);
+    cities.splice(0, cities.length);
+    console.log(cities);
+    setNewCities(newNodes);
+    console.log(cities);
   }
 
   const changeWeights = index => event => {
     setWeights(weights.slice(0, index).concat(event.target.value).concat(weights.slice((index+1))));
   }
 
-  const getRandom = (max, min) => {
-    return Math.floor(Math.random() * (max - min) + min)
-  }
-
-  const setCities = () => {
-    for (let i = 0; i < nodes; i++) {
-      cities.push({ name: (i + 1),
-                    locationX: getRandom(700, 100), 
-                    locationY: getRandom(500, 100),
-      });
-    }
-  }
+  
+  
   
   const nodesNumArr = [];
   for (let i = 3; i < 16; i++) {
@@ -117,8 +128,16 @@ function App() {
 	
 	const redrawCanvas = () => {
     let ctx = canvasRef.current.getContext('2d');
-    setCities();
+	ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, WIDTH, HEIGHT);
+  ctx.fillStyle = "white"
+    for (let i = 0; i < cities.length; i++) {
+      ctx.beginPath();
+			ctx.arc(cities[i].locationX, cities[i].locationY, radius, 0, 2*Math.PI, true);
+      ctx.fill();	
 
+    }
+    
 
   }
 
